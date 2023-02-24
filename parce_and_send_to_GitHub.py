@@ -25,24 +25,22 @@ with open(log_file_path, "r") as log_file, open(csv_file_path, "w", newline='') 
         user_agent = " ".join(parts[11:])[1:-2]
         csv_writer.writerow([ip_address, timestamp, http_method, http_path, http_version, http_status_code, http_response_size, http_referrer, user_agent])
 
-# # Открываем CSV файл для чтения
-# with open("csv/nginx.csv", "r") as csv_file:
-#     # Создаем reader объект
-#     csv_reader = csv.reader(csv_file)
-#     # Выводим каждую строку в консоль
-#     for row in csv_reader:
-#         print(row)
 
 # Push the CSV file to GitHub
-access_token = "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"
+#access_token = os.environ.get('GITHUB_TOKEN')
+access_token = "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"
+#github_repo_name = "parce_nginx_log_and_send_to_github"
+github_username = "ihoraryku"
 github_repo_name = "parce_nginx_log_and_send_to_github"
 github_file_path = "csv/nginx.csv"
-github_commit_message = "Add nginx log CSV file"
+github_commit_message = "Added changes"
 github_branch_name = "main"
 
 g = Github(access_token)
-repo = g.get_user().get_repo(github_repo_name)
+user = g.get_user(github_username)
+repo = user.get_repo(github_repo_name)
 contents = repo.get_contents("")
-file = open(github_file_path, "r").read()
+with open(csv_file_path, "r") as csv_file:
+    file = csv_file.read()
 repo.create_file(github_file_path, github_commit_message, file, branch=github_branch_name)
 print("CSV file uploaded to GitHub successfully.")

@@ -1,0 +1,1 @@
+Python script that parses the nginx.log file, then saves it to csv and sends it to GitHub
